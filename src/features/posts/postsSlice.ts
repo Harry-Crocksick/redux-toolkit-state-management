@@ -23,11 +23,11 @@ interface InitialState {
   error: string | undefined;
 }
 
-const initialState: InitialState = {
+const initialState = {
   posts: [],
   status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: undefined,
-};
+} satisfies InitialState as InitialState;
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   try {
@@ -173,10 +173,10 @@ const postsSlice = createSlice({
           post.date = sub(new Date(), { minutes: min++ }).toISOString();
           post.reactions = {
             thumbsUp: 0,
-            rocket: 0,
             wow: 0,
             heart: 0,
-            eyes: 0,
+            rocket: 0,
+            coffee: 0,
           };
           return post;
         });
@@ -193,10 +193,10 @@ const postsSlice = createSlice({
           action.payload.date = new Date().toISOString();
           action.payload.reactions = {
             thumbsUp: 0,
-            hooray: 0,
+            wow: 0,
             heart: 0,
             rocket: 0,
-            eyes: 0,
+            coffee: 0,
           };
           console.log(action.payload);
           state.posts.push(action.payload);
