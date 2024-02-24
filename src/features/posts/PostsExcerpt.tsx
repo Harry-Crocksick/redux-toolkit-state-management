@@ -1,11 +1,11 @@
-import { StateProps } from "./postsSlice";
+import { PostTypes } from "./postsSlice";
 import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
 
-export default function PostsExcerpt({ post }: { post: StateProps }) {
+export default function PostsExcerpt({ post }: { post: PostTypes }) {
   return (
-    <article key={post.postId}>
+    <article>
       <h3>{post.title}</h3>
       <p>{post.body.substring(0, 100)}</p>
       <p className="postCredit">

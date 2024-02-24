@@ -6,9 +6,9 @@ import axios from "axios";
 
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts" as const;
 
-export interface StateProps {
+export interface PostTypes {
   userId: number;
-  postId: number;
+  id: number;
   title: string;
   body: string;
   date: string;
@@ -18,7 +18,7 @@ export interface StateProps {
 type Status = "idle" | "loading" | "succeeded" | "failed";
 
 interface InitialState {
-  posts: Array<StateProps>;
+  posts: Array<PostTypes>;
   status: Status;
   error: string | undefined;
 }
@@ -40,7 +40,7 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 
 export const addNewPost = createAsyncThunk(
   "posts/addNewPost",
-  async (initialPost: StateProps) => {
+  async (initialPost: Omit<PostTypes, "id" | "date" | "reactions">) => {
     try {
       const response = await axios.post(POSTS_URL, initialPost);
       return response.data;
@@ -50,7 +50,7 @@ export const addNewPost = createAsyncThunk(
   }
 );
 
-/* const initialState: Array<StateProps> = [
+/* const initialState: Array<PostTypes> = [
   {
     id: "1",
     title: "Introduction to JavaScript",
@@ -127,14 +127,14 @@ const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    postAdded: {
-      reducer(state, action: PayloadAction<StateProps>) {
+    /* postAdded: {
+      reducer(state, action: PayloadAction<PostTypes>) {
         state.posts.push(action.payload);
       },
-      prepare(title: string, body: string, postId: number, userId: string) {
+      prepare(title: string, body: string, id: number, userId: number) {
         return {
           payload: {
-            postId,
+            id,
             title,
             body,
             userId: Number(userId),
@@ -149,15 +149,13 @@ const postsSlice = createSlice({
           },
         };
       },
-    },
+    }, */
     reactionAdded(
       state,
-      action: PayloadAction<{ reaction: string; postId: number }>
+      action: PayloadAction<{ reaction: string; id: number }>
     ) {
-      const { postId, reaction } = action.payload;
-      const existingPost = state.posts.find(
-        (post) => post.postId === Number(postId)
-      );
+      const { id, reaction } = action.payload;
+      const existingPost = state.posts.find((post) => post.id === id);
       if (existingPost) {
         existingPost.reactions[reaction]++;
       }
@@ -171,7 +169,7 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = "succeeded";
         let min = 1;
-        const loadedPosts = action.payload.map((post: StateProps) => {
+        const loadedPosts = action.payload.map((post: PostTypes) => {
           post.date = sub(new Date(), { minutes: min++ }).toISOString();
           post.reactions = {
             thumbsUp: 0,
@@ -190,7 +188,7 @@ const postsSlice = createSlice({
       })
       .addCase(
         addNewPost.fulfilled,
-        (state, action: PayloadAction<StateProps>) => {
+        (state, action: PayloadAction<PostTypes>) => {
           action.payload.userId = Number(action.payload.userId);
           action.payload.date = new Date().toISOString();
           action.payload.reactions = {
@@ -211,5 +209,5 @@ export const selectAllPosts = (state: AppState) => state.posts.posts;
 export const getPostsStatus = (state: AppState) => state.posts.status;
 export const getPostsError = (state: AppState) => state.posts.error;
 
-export const { postAdded, reactionAdded } = postsSlice.actions;
+export const { reactionAdded } = postsSlice.actions;
 export default postsSlice.reducer;

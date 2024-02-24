@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewPost, selectAllPosts } from "./postsSlice";
@@ -12,8 +13,6 @@ export default function AddPostForm() {
 
   const users = useSelector(selectAllUsers);
   const posts = useSelector(selectAllPosts);
-
-  const matchedPost = posts.find((post) => post.postId === Number(userId));
 
   const canSave =
     [title, content, userId].every(Boolean) && addRequestStatus === "idle";
@@ -31,10 +30,13 @@ export default function AddPostForm() {
   };
 
   const onSavePostClicked = () => {
+    const userIdNum = Number(userId);
     if (canSave) {
       try {
         setAddRequestStatus("pending");
-        dispatch(addNewPost({ title, body: content, userId })).unwrap();
+        dispatch(
+          addNewPost({ title, body: content, userId: userIdNum })
+        ).unwrap();
         setTitle("");
         setContent("");
         setUserId("");

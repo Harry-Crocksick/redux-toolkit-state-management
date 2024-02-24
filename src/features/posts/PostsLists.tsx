@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { nanoid } from "@reduxjs/toolkit";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectAllPosts,
@@ -28,7 +29,7 @@ export default function PostsList() {
       .slice()
       .sort((a, b) => b.date.localeCompare(a.date));
     content = orderedPosts.map((post) => (
-      <PostsExcerpt post={post} key={post.postId} />
+      <PostsExcerpt post={post} key={nanoid()} />
     ));
   } else if (postsStatus === "failed") {
     content = <p>{error}</p>;
