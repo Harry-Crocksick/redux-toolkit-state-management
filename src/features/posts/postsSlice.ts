@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { AppState } from "../../app/store";
 import { sub } from "date-fns";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts" as const;
 
@@ -29,12 +29,40 @@ const initialState = {
   error: undefined,
 } satisfies InitialState as InitialState;
 
+export const deletePost = createAsyncThunk(
+  "posts/deletePost",
+  async (initialPost) => {
+    const { id } = initialPost;
+    try {
+      const response = await axios.delete(`${POSTS_URL}/${id}`);
+      if (response?.status === 200) return initialPost;
+      return `${response?.status}: ${response?.statusText}`;
+    } catch (err) {
+      if (err instanceof AxiosError) return err.message;
+    }
+  }
+);
+
+export const updatePost = createAsyncThunk(
+  "posts/updatePost",
+  async (initialPost: Omit<PostTypes, "date">) => {
+    const { id } = initialPost;
+    try {
+      const response = await axios.put(`${POSTS_URL}/${id}`, initialPost);
+      return response.data;
+    } catch (err) {
+      if (err instanceof AxiosError) return initialPost;
+      return initialPost;
+    }
+  }
+);
+
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   try {
     const response = await axios.get(POSTS_URL);
     return response.data;
   } catch (err) {
-    if (err instanceof Error) return err.message;
+    if (err instanceof AxiosError) return err.message;
   }
 });
 
@@ -45,7 +73,7 @@ export const addNewPost = createAsyncThunk(
       const response = await axios.post(POSTS_URL, initialPost);
       return response.data;
     } catch (err) {
-      if (err instanceof Error) return err.message;
+      if (err instanceof AxiosError) return err.message;
     }
   }
 );
@@ -201,13 +229,35 @@ const postsSlice = createSlice({
           console.log(action.payload);
           state.posts.push(action.payload);
         }
-      );
+      )
+      .addCase(updatePost.fulfilled, (state, action) => {
+        if (!action.payload?.id) {
+          console.log("Update could not complete!");
+          console.log(action.payload);
+          return;
+        }
+        const { id } = action.payload;
+        action.payload.date = new Date().toISOString();
+        const posts = state.posts.filter((post) => post.id !== id);
+        state.posts = [...posts, action.payload];
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        if (!action.payload?.id) {
+          console.log("Delete count not complete!");
+          console.log(action.payload);
+        }
+        const { id } = action.payload;
+        const posts = state.posts.filter((post) => post.id !== id);
+        state.posts = posts;
+      });
   },
 });
 
 export const selectAllPosts = (state: AppState) => state.posts.posts;
 export const getPostsStatus = (state: AppState) => state.posts.status;
 export const getPostsError = (state: AppState) => state.posts.error;
+export const selectPostById = (state: AppState, postId: number) =>
+  state.posts.posts.find((post) => post.id === postId);
 
 export const { reactionAdded } = postsSlice.actions;
 export default postsSlice.reducer;

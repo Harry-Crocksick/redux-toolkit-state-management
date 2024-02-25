@@ -236,6 +236,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.7.6":
+  version: 7.23.9
+  resolution: "@babel/runtime@npm:7.23.9"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: 10c0/e71205fdd7082b2656512cc98e647d9ea7e222e4fe5c36e9e5adc026446fcc3ba7b3cdff8b0b694a0b78bb85db83e7b1e3d4c56ef90726682b74f13249cf952d
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.22.15, @babel/template@npm:^7.23.9":
   version: 7.23.9
   resolution: "@babel/template@npm:7.23.9"
@@ -1905,6 +1914,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"history@npm:^5.2.0":
+  version: 5.3.0
+  resolution: "history@npm:5.3.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.7.6"
+  checksum: 10c0/812ec839386222d6437bd78d9f05db32e47d105ada0ad8834b32626919dd2fee7a10001bc489510f93a8069d02f118214bd8d42a82f7cf9daf8e84fbcbbb2016
+  languageName: node
+  linkType: hard
+
 "http-cache-semantics@npm:^4.1.1":
   version: 4.1.1
   resolution: "http-cache-semantics@npm:4.1.1"
@@ -2640,6 +2658,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-redux: "npm:^9.1.0"
+    react-router-dom: "npm:6.3.0"
     typescript: "npm:^5.2.2"
     vite: "npm:^5.1.0"
   languageName: unknown
@@ -2674,6 +2693,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router-dom@npm:6.3.0":
+  version: 6.3.0
+  resolution: "react-router-dom@npm:6.3.0"
+  dependencies:
+    history: "npm:^5.2.0"
+    react-router: "npm:6.3.0"
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 10c0/490b0c50d46c32ad1a3264f8bcaf6b423bef86dc3b62e9070d5e81d90ce086a73af55834133920fc4125e7c8661ede901a550d73429c969b303d4dd9ce7bbaf2
+  languageName: node
+  linkType: hard
+
+"react-router@npm:6.3.0":
+  version: 6.3.0
+  resolution: "react-router@npm:6.3.0"
+  dependencies:
+    history: "npm:^5.2.0"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10c0/ac8785a0b28d363940763e49119e5160331099d4f0196235b143ba9cdc984048ca44a77497f393b12165c99baf8ae6c11386f1f6f20ef52d99c2e07b31920862
+  languageName: node
+  linkType: hard
+
 "react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
@@ -2696,6 +2739,13 @@ __metadata:
   version: 5.0.1
   resolution: "redux@npm:5.0.1"
   checksum: 10c0/b10c28357194f38e7d53b760ed5e64faa317cc63de1fb95bc5d9e127fab956392344368c357b8e7a9bedb0c35b111e7efa522210cfdc3b3c75e5074718e9069c
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.14.0":
+  version: 0.14.1
+  resolution: "regenerator-runtime@npm:0.14.1"
+  checksum: 10c0/1b16eb2c4bceb1665c89de70dcb64126a22bc8eb958feef3cd68fe11ac6d2a4899b5cd1b80b0774c7c03591dc57d16631a7f69d2daa2ec98100e2f29f7ec4cc4
   languageName: node
   linkType: hard
 
