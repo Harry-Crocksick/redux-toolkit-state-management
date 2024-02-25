@@ -3,12 +3,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewPost } from "./postsSlice";
 import { selectAllUsers } from "../users/usersSlice";
+import type { Status } from "./postsSlice";
 
 export default function AddPostForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");
-  const [addRequestStatus, setAddRequestStatus] = useState("idle");
+  const [addRequestStatus, setAddRequestStatus] = useState<Status>("idle");
   const dispatch = useDispatch();
 
   const users = useSelector(selectAllUsers);
@@ -31,7 +32,7 @@ export default function AddPostForm() {
   const onSavePostClicked = () => {
     if (canSave) {
       try {
-        setAddRequestStatus("pending");
+        setAddRequestStatus("loading");
         dispatch(
           addNewPost({ title, body: content, userId: Number(userId) })
         ).unwrap();

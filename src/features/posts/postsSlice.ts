@@ -15,7 +15,7 @@ export interface PostTypes {
   reactions: Record<string, number>;
 }
 
-type Status = "idle" | "loading" | "succeeded" | "failed";
+export type Status = "idle" | "loading" | "succeeded" | "failed";
 
 interface InitialState {
   posts: Array<PostTypes>;
