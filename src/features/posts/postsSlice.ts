@@ -31,7 +31,7 @@ const initialState = {
 
 export const deletePost = createAsyncThunk(
   "posts/deletePost",
-  async (initialPost) => {
+  async (initialPost: { id: number }) => {
     const { id } = initialPost;
     try {
       const response = await axios.delete(`${POSTS_URL}/${id}`);
